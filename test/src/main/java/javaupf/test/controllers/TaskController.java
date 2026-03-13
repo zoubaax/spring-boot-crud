@@ -25,4 +25,19 @@ public class TaskController {
         taskService.saveTask(task);
         return "redirect:/tasks";
     }
+    @GetMapping("/delete/{id}")
+    public String deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+        return "redirect:/tasks";
+    }
+
+    @GetMapping("/toggle/{id}")
+    public String toggleTask(@PathVariable Long id) {
+        Task task = taskService.getTaskById(id);
+        if (task != null) {
+            task.setCompleted(!task.isCompleted());
+            taskService.saveTask(task);
+        }
+        return "redirect:/tasks";
+    }
 }

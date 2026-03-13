@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Task Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-10">
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
+  <h1 class="text-2xl font-bold mb-6 text-blue-600">My Tasks</h1>
+
+  <form th:action="@{/tasks/add}" method="post" class="flex gap-2 mb-8">
+    <input type="text" name="title" placeholder="New task..." class="border p-2 flex-grow rounded">
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+  </form>
+
+  <ul>
+    <li th:each="task : ${tasks}" class="border-b py-2 flex justify-between">
+      <span th:text="${task.title}">Task Title</span>
+      <span th:if="${task.completed}" class="text-green-500">Done</span>
+    </li>
+  </ul>
+  <ul>
+    <li th:each="task : ${tasks}" class="border-b py-3 flex justify-between items-center">
+      <div>
+            <span th:text="${task.title}"
+                  th:class="${task.completed} ? 'line-through text-gray-400' : 'text-gray-800'">
+            </span>
+      </div>
+
+      <div class="flex gap-3">
+        <a th:href="@{/tasks/toggle/{id}(id=${task.id})}"
+           class="text-sm bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
+          <span th:text="${task.completed} ? 'Undo' : 'Done'"></span>
+        </a>
+
+        <a th:href="@{/tasks/delete/{id}(id=${task.id})}"
+           class="text-sm bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200"
+           onclick="return confirm('Are you sure?')">
+          Delete
+        </a>
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
